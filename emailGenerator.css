@@ -1,0 +1,19 @@
+body {
+  font-family: 'Noto Sans', sans-serif;
+  padding: 10px;
+}
+
+#loader {
+  font-style: italic;
+  color: gray;
+  margin-top: 10px;
+}
+
+#copyButton {
+  margin-top: 10px;
+  display: none;
+}
+
+ul {
+  padding-left: 18px;
+}
