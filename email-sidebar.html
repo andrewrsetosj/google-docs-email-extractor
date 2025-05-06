@@ -1,0 +1,65 @@
+<!-- Importing Noto Sans from Google Font Family API -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="email-sidebar.css">
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+  </head>
+  <body>
+    <button class="action" onclick="generateEmails()">Generate Emails</button>
+    <div id="loader" style="display:none;">Loading...</div>
+    <div id="emails" style="margin-top: 10px;">Click the button to generate email addresses based on the document content.</div>
+    <button id="copyButton" onclick="copyEmails()">Copy All Emails to Clipboard</button>
+
+    <script>
+      // Store the generated email addresses
+      let emailArray = [];
+
+      function generateEmails() {
+        document.getElementById('loader').style.display = 'block';
+        document.getElementById('emails').innerHTML = '';
+        document.getElementById('copyButton').style.display = 'none';
+
+        // Calling Google Apps Script backend function main()
+        google.script.run
+          .withSuccessHandler(function(emails) {
+            document.getElementById('loader').style.display = 'none';
+            emailArray = emails;
+
+            if (emails.length === 0) {
+              document.getElementById('emails').innerText = 'No names in Doc are associated with an email.';
+              return;
+            }
+
+            // Creating a bulleted list of email addresses
+            const htmlList = '<ul>' + emails.map(email => `<li>${email}</li>`).join('') + '</ul>';
+            document.getElementById('emails').innerHTML = htmlList;
+            
+            // Show the "Copy to Clipboard" button
+            document.getElementById('copyButton').style.display = 'inline-block';
+          })
+
+          // Show error message if Apps Script call fails
+          .withFailureHandler(function(error) {
+            document.getElementById('loader').style.display = 'none';
+            document.getElementById('emails').innerText = 'Failed to generate emails: ' + error.message;
+          })
+          .main();
+      }
+
+      // Copying all emails to clipboard when "Copy" button is clicked
+      function copyEmails() {
+        const textToCopy = emailArray.join(', ');
+        navigator.clipboard.writeText(textToCopy)
+          .then(() => {
+            alert('Emails copied to clipboard');
+          })
+          .catch(err => {
+            alert('Failed to copy emails');
+          });
+      }
+    </script>
+  </body>
+</html>
