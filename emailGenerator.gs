@@ -31,7 +31,7 @@ class StudentAmbassador {
 
 // Main function that processes the Google Doc and returns a list of matched emails
 // Input: None (main)
-// Return: Array of strings (e.g., ["prostaff@maillist.usc.edu", "jsmith@usc.edu", ...])
+// Returns: Array of strings (e.g., ["prostaff@maillist.usc.edu", "jsmith@usc.edu", ...])
 function main() {
   var doc = DocumentApp.getActiveDocument();
   var body = doc.getBody();
@@ -50,7 +50,7 @@ function main() {
 
 // Combines name and emails into StudentAmbassador objects
 // Input: allNamesList (array of strings), allEmailsList (array of strings)
-// Return: array of StudentAmbassador objects
+// Returns: array of StudentAmbassador objects
 function group(allNamesList, allEmailsList) {
   let group = [];
   for (let i = 0; i < allNamesList.length; i++) {
@@ -61,7 +61,7 @@ function group(allNamesList, allEmailsList) {
 
 // Matches names in the document to known StudentAmbassador names
 // Input: text (string), objectList (array of StudentAmbassador)
-// Return: array of email strings
+// Returns: array of email strings
 function extractEmailList(text, objectList) {
   const lowerText = text.toLowerCase();
   let emails = [];
